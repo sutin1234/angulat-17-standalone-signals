@@ -1,26 +1,29 @@
-name: Deploy to GitHub Pages
+name: Angular Build and Deploy
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Use Node.js 16
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16
-      - name: Install dependencies
-        run: npm install
-      - name: Build Angular app
-        run: ng build --output-hashing none
+          node-version: 20
+
+      - name: Build Angular app to prod
+        working-directory: angular-standalone
+        run: npm install && npm run build
+
       - name: Deploy to GitHub Pages
-        uses: JamesIves/angular-deploy-gh-pages-actions@v4
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: gh-pages # Replace with your desired branch
-          BUILD_DIR: dist/angular-standalone # Replace with your output directory
-          REPOSITORY_URL: ${{ github.repository }}
+          folder: dist/angular-standalone/browser
+          branch: main
+          token: ${{ secrets.GH_TOKEN }}
