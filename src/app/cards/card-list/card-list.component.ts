@@ -1,9 +1,10 @@
-import { Component, input } from '@angular/core';
+import { Component, model } from '@angular/core';
 import { CardItemComponent } from '../card-item/card-item.component';
 
 interface Items {
   id: number;
   name: string;
+  isDeleted?: boolean;
 }
 
 @Component({
@@ -12,11 +13,14 @@ interface Items {
   imports: [CardItemComponent],
   template: `
     @for (item of items(); track item.id) {
-      <corp-card-item [item]="item"/>
+      <corp-card-item [item]="item" (itemChange)="onItemChange($event)"/>
     }
   `,
-  styles: ``
 })
 export class CardListComponent {
-  items = input.required<Items[]>();
+  items = model.required<Items[]>();
+
+  onItemChange(item: Items) {
+    console.log('item changed', item);
+  }
 }
