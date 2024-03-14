@@ -1,4 +1,4 @@
-import { Component, model } from '@angular/core';
+import {Component, EventEmitter, input, Output} from '@angular/core';
 
 @Component({
   selector: 'corp-large-component',
@@ -6,9 +6,9 @@ import { Component, model } from '@angular/core';
   imports: [],
   template: `
     <div>
-      large-component works! <br />
-      input: {{ show() }} <br />
-      isDeleted: {{ item().isDeleted }} <br />
+      large-component works! <br/>
+      input: {{ show() }} <br/>
+      isDeleted: {{ item().isDeleted }} <br/>
       <div>
         <button (click)="toggle()">toggle</button>
       </div>
@@ -17,12 +17,14 @@ import { Component, model } from '@angular/core';
   styles: ``
 })
 export class LargeComponentComponent {
-  show = model(false);
-  item = model.required<{ id: number; name: string; isDeleted?: boolean }>();
+  show = input(false);
+  item = input.required<{ id: number; name: string; isDeleted?: boolean }>();
+  @Output() itemChange = new EventEmitter<any>();
+  @Output() showChange = new EventEmitter<boolean>();
 
   toggle() {
-    this.show.set(!this.show());
-    this.item.set({ ...this.item(), isDeleted: !this.item().isDeleted });
+    // this.show.set(!this.show());
+    // this.item.set({...this.item(), isDeleted: !this.item().isDeleted});
   }
 
 }

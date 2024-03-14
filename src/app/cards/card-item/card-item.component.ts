@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Output, model, viewChild } from "@angular/core";
+import { AfterViewInit, Component, ElementRef, EventEmitter, input, Output, viewChild } from "@angular/core";
+import { ButtonModule } from 'primeng/button';
 import { LargeComponentComponent } from "../../components/large-component/large-component.component";
 
 interface Item {
@@ -16,27 +17,29 @@ interface Item {
       <div #cmp> empty content</div>
       <corp-large-component [item]="item()" (showChange)="onShowChange($event)" (itemChange)="onItemChange($event)"/>
       @if (!item().isDeleted) {
-        <button (click)="update()">delete</button>
+        <!-- <button (click)="update()">delete</button> -->
+        <p-button label="Check" icon="pi pi-check"></p-button>
       }
     </div>
   `,
   styles: ``,
-  imports: [LargeComponentComponent]
+  imports: [LargeComponentComponent, ButtonModule]
 })
 export class CardItemComponent implements AfterViewInit {
 
-  item = model.required<Item>();
+  item = input.required<Item>();
   @Output() itemChange = new EventEmitter<Item>();
 
   divEl = viewChild.required<ElementRef>('cmp');
   largeComp = viewChild<LargeComponentComponent>(LargeComponentComponent);
 
   update() {
-    this.item.update((item) => ({ ...item, isDeleted: !item.isDeleted }));
+    // this.item.up((item) => ({ ...item, isDeleted: !item.isDeleted }));
     this.itemChange.emit(this.item());
   }
+
   ngAfterViewInit(): void {
-    this.largeComp()?.show.set(true)
+    // this.largeComp()?.show.set(true)
   }
 
   onShowChange(isShow: boolean) {

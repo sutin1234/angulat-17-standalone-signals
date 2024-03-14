@@ -1,5 +1,5 @@
-import { Component, model } from '@angular/core';
-import { CardItemComponent } from '../card-item/card-item.component';
+import {Component, input} from '@angular/core';
+import {CardItemComponent} from '../card-item/card-item.component';
 
 interface Items {
   id: number;
@@ -18,7 +18,7 @@ interface Items {
   `,
 })
 export class CardListComponent {
-  items = model.required<Items[]>();
+  items = input.required<Items[]>();
 
   onItemChange(item: Items) {
     console.log('item changed', item);
